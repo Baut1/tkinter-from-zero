@@ -29,4 +29,6 @@ marco_principal5.config(bg="green")
 marco_principal6.config(width=100, height=100)
 marco_principal6.config(bg="orange")
 
+boton = Button(root, text="click", bg="red", padx=100, pady=25, state=DISABLED).grid(row=1, column=2)
+
 root.mainloop()
