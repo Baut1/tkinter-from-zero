@@ -1,18 +1,18 @@
 from tkinter import *
 root = Tk()
 
-texto = Label(root, text="introduzca sus datos").grid(row=0, column=0)
+rbtn = IntVar()
+rbtn.set(value=1)
 
-user = Entry(root, width=50)
-user.grid(row=1, column=0)
+def actualiza(value):
+    opcion_set = Label(root, text=value).grid(row=3)
 
-password = Entry(root, width=50, show="*")
-password.grid(row=2, column=0)
 
-def click_boton():
-    texto = Label(root, text=f'"{user.get()}" inicio sesion').grid(row=0, column=0)
+titulo = Label(root, text="seleccione").grid(row=0)
 
-boton = Button(root, text="enviar", bg="red", padx=100, pady=25,
-               command=click_boton).grid(row=3, column=0)
+opcion_1 = Radiobutton(root, text="primera opcion", value=1, variable=rbtn,
+                       command=lambda : actualiza(rbtn.get())).grid(row=1)
+opcion_2 = Radiobutton(root, text="segunda opcion", value=2, variable=rbtn,
+                       command=lambda : actualiza(rbtn.get())).grid(row=2)
 
 root.mainloop()
