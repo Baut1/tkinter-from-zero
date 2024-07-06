@@ -1,9 +1,15 @@
 from tkinter import *
-root = Tk()
+from tkinter.messagebox import *
 
-titulo1 = Label(root, text="Noroeste").pack(anchor=NW)
-titulo1 = Label(root, text="Norte").pack(anchor=N)
-titulo1 = Label(root, text="Este").pack(anchor=E)
-titulo1 = Label(root, text="Sur").pack(anchor=S)
+root = Tk()
+root.title("Titulo de la ventana principal")
+root.iconbitmap("img/icon.ico")
+
+def muestra_ventana():
+    askretrycancel(title="deberia dejar blablabla?", message="Msg que se muestra")
+
+boton1 = Button(root, text="enviar",
+                command=muestra_ventana,
+                width=75).pack()
 
 root.mainloop()
