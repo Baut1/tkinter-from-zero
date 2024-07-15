@@ -44,17 +44,20 @@ def division():
     operacion = "/"
 
 def igual():
-    global num2
-    num2 = pantalla.get()
-    pantalla.delete(0, END)
-    if operacion == "+":
-        pantalla.insert(0, num1 + float(num2))
-    if operacion == "-":
-        pantalla.insert(0, num1 - float(num2))
-    if operacion == "*":
-        pantalla.insert(0, num1 * float(num2))
-    if operacion == "/":
-        pantalla.insert(0, num1 / float(num2))
+    try: 
+        global num2
+        num2 = pantalla.get()
+        pantalla.delete(0, END)
+        if operacion == "+":
+            pantalla.insert(0, num1 + float(num2))
+        if operacion == "-":
+            pantalla.insert(0, num1 - float(num2))
+        if operacion == "*":
+            pantalla.insert(0, num1 * float(num2))
+        if operacion == "/":
+            pantalla.insert(0, num1 / float(num2))
+    except NameError:
+        pantalla.insert(0, "Error")
 
 def clear():
     pantalla.delete(0, END)
