@@ -1,18 +1,21 @@
 from tkinter import *
 
 root = Tk()
-root.title("Calculadora")
+root.title("ventana principal")
+root.geometry('300x200')
 
-buscador = LabelFrame(root, text="Buscador", padx=100, pady=100)
-buscador.grid(row=0, column=0, padx=5, pady=5)
+def envia_boton():
+    ventana_nueva = Toplevel()
+    ventana_nueva.title("ventana secundaria")
+    ventana_nueva.geometry("300x200")
+    valor_entrada = entrada.get()
+    etiqueta = Label(ventana_nueva, text=valor_entrada).grid(row=0)
+    cerrar_ventana = Button(root, text="cerrar nueva ventana", command=ventana_nueva.destroy).grid(row=2)
 
-barra = Entry(buscador, text="Buscas algo?").grid(row=0, column=1)
-boton = Button(buscador, text="Buscar").grid(row=0, column=0, padx=10)
+entrada = Entry(root, width=20)
+entrada.grid(row=0)
 
-buscador2 = LabelFrame(root, text="Buscador 2", padx=100, pady=100)
-buscador2.grid(row=1, column=0, padx=5, pady=5)
-
-barra2 = Entry(buscador2, text="Buscas algo?").grid(row=0, column=0)
-boton2 = Button(buscador2, text="Buscar").grid(row=0, column=1)
+envia = Button(root, command=envia_boton, text="enviar").grid(row=1)
+cerrar_root = Button(root, command=root.destroy, text="cerrar ventana principal").grid(row=3)
 
 root.mainloop()
