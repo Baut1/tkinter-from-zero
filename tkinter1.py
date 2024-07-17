@@ -4,18 +4,21 @@ root = Tk()
 root.title("ventana principal")
 root.geometry('300x200')
 
-def envia_boton():
-    ventana_nueva = Toplevel()
-    ventana_nueva.title("ventana secundaria")
-    ventana_nueva.geometry("300x200")
-    valor_entrada = entrada.get()
-    etiqueta = Label(ventana_nueva, text=valor_entrada).grid(row=0)
-    cerrar_ventana = Button(root, text="cerrar nueva ventana", command=ventana_nueva.destroy).grid(row=2)
+def seleccion():
+    etiqueta1 = Label(root, text=control1.get()).pack()
+    etiqueta2 = Label(root, text=control2.get()).pack()
 
-entrada = Entry(root, width=20)
-entrada.grid(row=0)
+control1 = StringVar()
+control2 = StringVar()
 
-envia = Button(root, command=envia_boton, text="enviar").grid(row=1)
-cerrar_root = Button(root, command=root.destroy, text="cerrar ventana principal").grid(row=3)
+opcion_1 = Checkbutton(root, text="opcion 1", variable=control1, onvalue="opcion 1 seleccionada", offvalue="opcion 1 no seleccionada")
+opcion_1.pack()
+opcion_1.deselect()
+
+opcion_2 = Checkbutton(root, text="opcion 2", variable=control2, onvalue="opcion 2 seleccionada", offvalue="opcion 2 no seleccionada")
+opcion_2.pack()
+opcion_2.deselect()
+
+muestra_seleccion = Button(root, text="mostrar seleccion", command=seleccion).pack()
 
 root.mainloop()
