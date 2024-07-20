@@ -23,49 +23,40 @@ except mariadb.Error as error:
 
 # interfaz grafica
 Label(root,
-      text="registro para nuevos clientes",
+      text="eliminar tabla o base de datos",
       font="calibri 18",
       fg="red").grid(row=0, columnspan=2)
 
 Label(root,
-		text="Nombre").grid(row=1, column=0, pady=10)
+		text="Tabla").grid(row=1, column=0, pady=10)
 
-e_nombre = Entry(root)
-e_nombre.grid(row=1, column=1, pady=10)
-
-Label(root,
-		text="Apellidos").grid(row=2, column=0, pady=10)
-
-e_apellidos = Entry(root)
-e_apellidos.grid(row=2, column=1, pady=10)
+e_tabla = Entry(root)
+e_tabla.grid(row=1, column=1, pady=10)
 
 Label(root,
-		text="Teléfono").grid(row=3, column=0, pady=10)
+		text="Base de datos").grid(row=2, column=0, pady=10)
 
-e_telefono = Entry(root)
-e_telefono.grid(row=3, column=1, pady=10)
-
-Label(root,
-		text="Dirección").grid(row=4, column=0, pady=10)
-
-e_direccion = Entry(root)
-e_direccion.grid(row=4, column=1, pady=10)
+e_base_datos = Entry(root)
+e_base_datos.grid(row=2, column=1, pady=10)
 
 # logica
-def registro_cliente():
-	nombre = e_nombre.get()
-	apellidos = e_apellidos.get()
-	telefono = e_telefono.get()
-	direccion = e_direccion.get()
+def eliminar_tabla():
+    tabla = e_tabla.get()
+    try:
+        cursor.execute(f"DROP TABLE {tabla}")
+        cursor.commit()
+    except mariadb.Error as error_tabla:
+        print(f"Error al eliminar la tabla: {error_tabla}")
 
-	try:
-		cursor.execute("INSERT INTO clientes (nombre, apellidos, telefono, direccion) VALUES (?, ?, ?, ?)",
-		(nombre, apellidos, telefono, direccion))
-		conexion.commit()
+def eliminar_base_datos():
+    base_datos = e_base_datos.get()
+    try:
+        cursor.execute(f"DROP DATABASE {base_datos}")
+        cursor.commit()
+    except mariadb.Error as error_base_datos:
+        print(f"Error al eliminar la base de datos: {error_base_datos}")
 
-	except mariadb.Error as error_registro:
-		print(f"Error en el registro: {error_registro}")
-
-boton = Button(root, text="Registrar", width=20, command=registro_cliente).grid(row=5, columnspan=2)
+boton1 = Button(root, text="elim tabla", width=20, command=eliminar_tabla).grid(row=5, column=0)
+boton2 = Button(root, text="elim bdd", width=20, command=eliminar_base_datos).grid(row=5, column=1)
 
 root.mainloop()
