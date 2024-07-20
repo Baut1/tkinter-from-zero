@@ -1,230 +1,62 @@
 from tkinter import *
+import mariadb
 
 root = Tk()
-root.title("Calculadora")
-root.iconbitmap("img/icon.ico")
-root.resizable(0, 0)
-root.geometry("336x405")
+root.title("ventana principal")
+root.geometry('300x200')
 
-def envia_boton(valor):
-    anterior = pantalla.get()
-    pantalla.delete(0, END)
-    pantalla.insert(0, str(anterior) + str(valor))
+# conexion
+try:
+    conexion = mariadb.connect(
+        user="root",
+        password="",
+        host="127.0.0.1",
+        port=3306,
+        database="tkinterdesdecero"
+    )
+    # Label(root, text="Se conecto correctamente a la base de datos: " + conexion.database).pack()
+    cursor = conexion.cursor()
 
-def suma():
-    global num1
-    global operacion
-    num1 = pantalla.get()
-    num1 = float(num1)
-    pantalla.delete(0, END)
-    operacion = "+"
+except mariadb.Error as error:
+    print(f"Error al conectar con la base de datos {error}")
+    exit(1)
 
-def resta():
-    global num1
-    global operacion
-    num1 = pantalla.get()
-    num1 = float(num1)
-    pantalla.delete(0, END)
-    operacion = "-"
+# interfaz grafica
+Label(root,
+      text="eliminar tabla o base de datos",
+      font="calibri 18",
+      fg="red").grid(row=0, columnspan=2)
 
-def multiplicacion():
-    global num1
-    global operacion
-    num1 = pantalla.get()
-    num1 = float(num1)
-    pantalla.delete(0, END)
-    operacion = "*"
+Label(root,
+		text="Tabla").grid(row=1, column=0, pady=10)
 
-def division():
-    global num1
-    global operacion
-    num1 = pantalla.get()
-    num1 = float(num1)
-    pantalla.delete(0, END)
-    operacion = "/"
+e_tabla = Entry(root)
+e_tabla.grid(row=1, column=1, pady=10)
 
-def igual():
-    try: 
-        global num2
-        num2 = pantalla.get()
-        pantalla.delete(0, END)
-        if operacion == "+":
-            pantalla.insert(0, num1 + float(num2))
-        if operacion == "-":
-            pantalla.insert(0, num1 - float(num2))
-        if operacion == "*":
-            pantalla.insert(0, num1 * float(num2))
-        if operacion == "/":
-            pantalla.insert(0, num1 / float(num2))
-    except NameError:
-        pantalla.insert(0, "Error")
+Label(root,
+		text="Base de datos").grid(row=2, column=0, pady=10)
 
-def clear():
-    pantalla.delete(0, END)
+e_base_datos = Entry(root)
+e_base_datos.grid(row=2, column=1, pady=10)
 
-pantalla = Entry(root,
-                 width=22,
-                 bg="black",
-                 fg="white",
-                 borderwidth=0,
-                 font=('arial', 18, 'bold'))
+# logica
+def eliminar_tabla():
+    tabla = e_tabla.get()
+    try:
+        cursor.execute(f"DROP TABLE {tabla}")
+        cursor.commit()
+    except mariadb.Error as error_tabla:
+        print(f"Error al eliminar la tabla: {error_tabla}")
 
-pantalla.grid(row=0, padx=2, pady=2, columnspan=4)
+def eliminar_base_datos():
+    base_datos = e_base_datos.get()
+    try:
+        cursor.execute(f"DROP DATABASE {base_datos}")
+        cursor.commit()
+    except mariadb.Error as error_base_datos:
+        print(f"Error al eliminar la base de datos: {error_base_datos}")
 
-boton_1 = Button(root,
-                 text="1",
-                 width=9,
-                 height=3,
-                 bg="white",
-                 fg="red",
-                 borderwidth=0,
-                 cursor="hand2",
-                 command=lambda: envia_boton(1)).grid(row=1, column=0, padx=1, pady=1)
-
-boton_2 = Button(root,text="2",
-				width=9,
-				height=3,
-				bg="white",
-				fg="red",
-				borderwidth=0,
-				cursor="hand2",
-                 command=lambda: envia_boton(2)).grid(row=1, column=1, padx=1, pady=1)
-
-boton_3 = Button(root,text="3",
-				width=9,
-				height=3,
-				bg="white",
-				fg="red",
-				borderwidth=0,
-				cursor="hand2",
-                 command=lambda: envia_boton(3)).grid(row=1, column=2, padx=1, pady=1)
-
-boton_4 = Button(root,text="4",
-				width=9,
-				height=3,
-				bg="white",
-				fg="red",
-				borderwidth=0,
-				cursor="hand2",
-                 command=lambda: envia_boton(4)).grid(row=2, column=0, padx=1, pady=1)
-
-boton_5 = Button(root,text="5",
-				width=9,
-				height=3,
-				bg="white",
-				fg="red",
-				borderwidth=0,
-				cursor="hand2",
-                 command=lambda: envia_boton(5)).grid(row=2, column=1, padx=1, pady=1)
-
-boton_6 = Button(root,text="6",
-				width=9,
-				height=3,
-				bg="white",
-				fg="red",
-				borderwidth=0,
-				cursor="hand2",
-                 command=lambda: envia_boton(6)).grid(row=2, column=2, padx=1, pady=1)
-
-boton_7 = Button(root,text="7",
-				width=9,
-				height=3,
-				bg="white",
-				fg="red",
-				borderwidth=0,
-				cursor="hand2",
-                 command=lambda: envia_boton(7)).grid(row=3, column=0, padx=1, pady=1)
-
-boton_8 = Button(root,text="8",
-				width=9,
-				height=3,
-				bg="white",
-				fg="red",
-				borderwidth=0,
-				cursor="hand2",
-                 command=lambda: envia_boton(8)).grid(row=3, column=1, padx=1, pady=1)
-
-boton_9 = Button(root,text="9",
-				width=9,
-				height=3,
-				bg="white",
-				fg="red",
-				borderwidth=0,
-				cursor="hand2",
-                 command=lambda: envia_boton(9)).grid(row=3, column=2, padx=1, pady=1)
-
-boton_0 = Button(root,text="0",
-				width=9,
-				height=3,
-				bg="white",
-				fg="red",
-				borderwidth=0,
-				cursor="hand2",
-                 command=lambda: envia_boton(0)).grid(row=4, column=1, padx=1, pady=1)
-
-
-boton_igual = Button(root,text="=",
-				width=9,
-				height=3,
-				bg="red",
-				fg="white",
-				borderwidth=0,
-				cursor="hand2",
-                 command=igual).grid(row=4, column=0, padx=1, pady=1)
-
-boton_punto = Button(root,text=".",
-				width=9,
-				height=3,
-				bg="spring green",
-				fg="black",
-				cursor="hand2",
-                 command=lambda: envia_boton("."),
-				borderwidth=0).grid(row=4, column=2, padx=1, pady=1)
-
-boton_mas = Button(root,text="+",
-				width=9,
-				height=3,
-				bg="deep sky blue",
-				fg="black",
-				borderwidth=0,
-				cursor="hand2",
-                 command=suma).grid(row=1, column=3, padx=1, pady=1)
-
-boton_menos = Button(root,text="-",
-				width=9,
-				height=3,
-				bg="deep sky blue",
-				fg="black",
-				borderwidth=0,
-				cursor="hand2",
-                 command=resta).grid(row=2, column=3, padx=1, pady=1)
-
-boton_multiplicacion = Button(root,text="*",
-				width=9,
-				height=3,
-				bg="deep sky blue",
-				fg="black",
-				borderwidth=0,
-				cursor="hand2",
-                 command=multiplicacion).grid(row=3, column=3, padx=1, pady=1)
-
-boton_division = Button(root,text="/",
-				width=9,
-				height=3,
-				bg="deep sky blue",
-				fg="black",
-				borderwidth=0,
-				cursor="hand2",
-                 command=division).grid(row=4, column=3, padx=1, pady=1)
-
-boton_despejar = Button(root,text="C",
-				width=40,
-				height=3,
-				bg="deep sky blue",
-				fg="black",
-				borderwidth=0,
-				cursor="hand2",
-                 command=clear).grid(row=5, column=0, columnspan=4, padx=1, pady=1)
-
+boton1 = Button(root, text="elim tabla", width=20, command=eliminar_tabla).grid(row=5, column=0)
+boton2 = Button(root, text="elim bdd", width=20, command=eliminar_base_datos).grid(row=5, column=1)
 
 root.mainloop()
